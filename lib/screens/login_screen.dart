@@ -8,19 +8,19 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return PopScope(
-      canPop: false,
-      onPopInvokedWithResult: (didPop, result) {
-        if (!didPop) {
-          // Navigate back to main tabs instead of closing app
-          context.go('/');
-        }
-      },
+      canPop: true, // Allow default pop behavior
       child: Scaffold(
         appBar: AppBar(
           leading: IconButton(
             icon: const Icon(Icons.arrow_back),
             onPressed: () {
-              context.go('/');
+              // Use pop() which will trigger the reverse slide animation
+              if (context.canPop()) {
+                context.pop();
+              } else {
+                // Fallback if somehow can't pop
+                context.go('/');
+              }
             },
           ),
           title: const Text('Login'),

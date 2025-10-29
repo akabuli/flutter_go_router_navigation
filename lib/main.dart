@@ -7,6 +7,7 @@ import 'screens/news_screen.dart';
 import 'screens/profile_screen.dart';
 import 'screens/login_screen.dart';
 import 'widgets/main_tab_scaffold.dart';
+import 'utils/page_transitions.dart';
 
 void main() {
   runApp(MyApp());
@@ -22,9 +23,10 @@ class MyApp extends StatelessWidget {
       final isGoingToLogin = state.matchedLocation == '/login';
       final isGoingToProfile = state.matchedLocation == '/profile';
 
-      // If not authenticated and trying to access profile, redirect to login
+      // If not authenticated and trying to access profile directly (e.g., deep link)
+      // redirect to home instead
       if (!isAuthenticated && isGoingToProfile) {
-        return '/login?from=profile';
+        return '/';
       }
 
       // If authenticated and on login page, redirect based on 'from' parameter
@@ -61,7 +63,15 @@ class MyApp extends StatelessWidget {
           ),
         ],
       ),
-      GoRoute(path: '/login', builder: (context, state) => const LoginScreen()),
+      GoRoute(
+        path: '/login',
+        pageBuilder: (context, state) {
+          return slideFromRightTransition(
+            key: state.pageKey,
+            child: const LoginScreen(),
+          );
+        },
+      ),
     ],
   );
 

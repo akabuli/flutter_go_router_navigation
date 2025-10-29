@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import '../services/auth_service.dart';
 
 class MainTabScaffold extends StatefulWidget {
   final Widget child;
@@ -17,6 +18,13 @@ class MainTabScaffold extends StatefulWidget {
 
 class _MainTabScaffoldState extends State<MainTabScaffold> {
   void _onTabTapped(int index) {
+    // Check if trying to access profile without authentication
+    if (index == 3 && !AuthService.isAuthenticated) {
+      // Use push instead of go to create proper navigation stack
+      context.push('/login?from=profile');
+      return;
+    }
+
     switch (index) {
       case 0:
         context.go('/');
