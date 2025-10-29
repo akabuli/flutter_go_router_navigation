@@ -16,7 +16,8 @@ class ProfileScreen extends StatelessWidget {
           ElevatedButton(
             onPressed: () {
               AuthService.logout();
-              context.go('/login?from=profile');
+              // Use push instead of go to create navigation stack for animation
+              context.push('/login?from=profile');
             },
             child: const Text('Logout'),
           ),
